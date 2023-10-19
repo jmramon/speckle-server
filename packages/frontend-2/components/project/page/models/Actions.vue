@@ -33,6 +33,7 @@ import { useCopyModelLink } from '~~/lib/projects/composables/modelManagement'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
 import { graphql } from '~~/lib/common/generated/gql'
 import { useMixpanel } from '~~/lib/core/composables/mp'
+import { useFileDownload } from '~~/lib/core/composables/fileUpload'
 
 graphql(`
   fragment ProjectPageModelsActions on Model {
@@ -46,6 +47,7 @@ enum ActionTypes {
   Delete = 'delete',
   Share = 'share',
   UploadVersion = 'upload-version',
+  DownloadLatestVersion = 'download-latest-version',
   CopyId = 'copy-id'
 }
 
@@ -69,6 +71,24 @@ const showActionsMenu = ref(false)
 const openDialog = ref(null as Nullable<ActionTypes>)
 
 const isMain = computed(() => props.model.name === 'main')
+
+const updateAndDownloadActions = function () {
+  let actions = {
+    title: 'Upload new version',
+    id: ActionTypes.UploadVersion,
+    disabled: !props.canEdit
+  }
+  if (props.model && props.model.blobIds && props.model.blobIds.length > 0) {
+    const download = {
+      title: 'Download latest version',
+      id: ActionTypes.DownloadLatestVersion,
+      disabled: !props.canEdit
+    }
+    actions = { ...actions, ...download }
+  }
+  return actions
+}
+
 const actionsItems = computed<LayoutMenuItem[][]>(() => [
   [
     { title: 'Rename', id: ActionTypes.Rename, disabled: !props.canEdit },
@@ -82,13 +102,7 @@ const actionsItems = computed<LayoutMenuItem[][]>(() => [
     { title: 'Share', id: ActionTypes.Share },
     { title: 'Copy ID', id: ActionTypes.CopyId }
   ],
-  [
-    {
-      title: 'Upload new version',
-      id: ActionTypes.UploadVersion,
-      disabled: !props.canEdit
-    }
-  ]
+  [updateAndDownloadActions()]
 ])
 
 const isRenameDialogOpen = computed({
@@ -102,8 +116,9 @@ const isDeleteDialogOpen = computed({
 
 const mp = useMixpanel()
 
-const onActionChosen = (params: { item: LayoutMenuItem; event: MouseEvent }) => {
+const onActionChosen = async (params: { item: LayoutMenuItem; event: MouseEvent }) => {
   const { item } = params
+  const { download } = useFileDownload()
 
   switch (item.id) {
     case ActionTypes.Rename:
@@ -116,6 +131,17 @@ const onActionChosen = (params: { item: LayoutMenuItem; event: MouseEvent }) => 
       break
     case ActionTypes.UploadVersion:
       emit('upload-version')
+      break
+    case ActionTypes.DownloadLatestVersion:
+      try {
+        await download({
+          blobId: props.model.blobIds[props.model.blobIds.length - 1].id,
+          fileName: `${props.model.name}.ifc`,
+          projectId: props.projectId
+        })
+      } catch (e) {
+        console.log(e)
+      }
       break
     case ActionTypes.CopyId:
       copy(props.model.id, { successMessage: 'Copied model ID to clipboard' })

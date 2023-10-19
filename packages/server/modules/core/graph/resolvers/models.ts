@@ -25,6 +25,7 @@ import {
 import { getModelTreeItems } from '@/modules/core/repositories/branches'
 import { BranchNotFoundError } from '@/modules/core/errors/branch'
 import { CommitNotFoundError } from '@/modules/core/errors/commit'
+import { getAllStreamBlobIds } from '@/modules/blobstorage/services'
 
 export = {
   Project: {
@@ -79,6 +80,9 @@ export = {
           parentModelName: parent.name
         }
       )
+    },
+    async blobIds(parent) {
+      return await getAllStreamBlobIds({ streamId: parent.streamId })
     },
     async displayName(parent) {
       return last(parent.name.split('/'))
@@ -163,4 +167,4 @@ export = {
       )
     }
   }
-} as Resolvers
+} as unknown as Resolvers

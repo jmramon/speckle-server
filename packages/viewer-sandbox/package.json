@@ -20,7 +20,7 @@
     "lint": "yarn lint:eslint && yarn lint:tsc"
   },
   "dependencies": {
-    "@speckle/viewer": "workspace:^",
+    "@speckle/viewer": "^2.16.0",
     "tweakpane": "^3.0.8"
   },
   "devDependencies": {

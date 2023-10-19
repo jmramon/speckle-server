@@ -93,6 +93,7 @@ type Model {
   """
   Return a model tree of children
   """
+  blobIds: [BlobIds!]!
   childrenTree: [ModelsTreeItem!]!
   version(id: String!): Version!
   versions(
@@ -112,6 +113,10 @@ type ModelsTreeItemCollection {
   totalCount: Int!
   cursor: String
   items: [ModelsTreeItem!]!
+}
+
+type BlobIds {
+  id: String
 }
 
 input CreateModelInput {

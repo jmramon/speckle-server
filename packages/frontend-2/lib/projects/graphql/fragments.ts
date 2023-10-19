@@ -53,6 +53,9 @@ export const projectPageLatestItemsModelItemFragment = graphql(`
     id
     name
     displayName
+    blobIds {
+      id
+    }
     versionCount: versions(limit: 0) {
       totalCount
     }

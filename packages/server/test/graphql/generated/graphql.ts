@@ -268,6 +268,11 @@ export type AutomationsStatus = {
   statusMessage?: Maybe<Scalars['String']>;
 };
 
+export type BlobIds = {
+  __typename?: 'BlobIds';
+  id?: Maybe<Scalars['String']>;
+};
+
 export type BlobMetadata = {
   __typename?: 'BlobMetadata';
   createdAt: Scalars['DateTime'];
@@ -790,6 +795,7 @@ export type Model = {
   author: LimitedUser;
   automationStatus?: Maybe<AutomationsStatus>;
   /** Return a model tree of children */
+  blobIds: Array<BlobIds>;
   childrenTree: Array<ModelsTreeItem>;
   /** All comment threads in this model */
   commentThreads: CommentCollection;
@@ -889,6 +895,11 @@ export type ModelsTreeItemCollection = {
   cursor?: Maybe<Scalars['String']>;
   items: Array<ModelsTreeItem>;
   totalCount: Scalars['Int'];
+};
+
+export type BlobIdsCollection = {
+  __typename?: 'BlobIdsCollection';
+  id: String
 };
 
 export type MoveVersionsInput = {

@@ -795,6 +795,11 @@ export type ModelsTreeItemCollection = {
   totalCount: Scalars['Int'];
 };
 
+export type BlobIdsCollection = {
+  __typename?: 'BlobIdsCollection';
+  id: String
+};
+
 export type MoveVersionsInput = {
   /** If the name references a nonexistant model, it will be created */
   targetModelName: Scalars['String'];

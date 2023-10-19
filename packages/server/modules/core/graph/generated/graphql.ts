@@ -278,6 +278,11 @@ export type AutomationsStatus = {
   statusMessage?: Maybe<Scalars['String']>;
 };
 
+export type BlobIds = {
+  __typename?: 'BlobIds';
+  id?: Maybe<Scalars['String']>;
+};
+
 export type BlobMetadata = {
   __typename?: 'BlobMetadata';
   createdAt: Scalars['DateTime'];
@@ -800,6 +805,7 @@ export type Model = {
   author: LimitedUser;
   automationStatus?: Maybe<AutomationsStatus>;
   /** Return a model tree of children */
+  blobIds: Array<BlobIds>;
   childrenTree: Array<ModelsTreeItem>;
   /** All comment threads in this model */
   commentThreads: CommentCollection;
@@ -899,6 +905,11 @@ export type ModelsTreeItemCollection = {
   cursor?: Maybe<Scalars['String']>;
   items: Array<ModelsTreeItem>;
   totalCount: Scalars['Int'];
+};
+
+export type BlobIdsCollection = {
+  __typename?: 'BlobIdsCollection';
+  id: String
 };
 
 export type MoveVersionsInput = {
@@ -2953,6 +2964,7 @@ export type ResolversTypes = {
   AutomationRunStatusUpdateInput: AutomationRunStatusUpdateInput;
   AutomationsStatus: ResolverTypeWrapper<Omit<AutomationsStatus, 'automationRuns'> & { automationRuns: Array<ResolversTypes['AutomationRun']> }>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
+  BlobIds: ResolverTypeWrapper<BlobIds>;
   BlobMetadata: ResolverTypeWrapper<BlobMetadata>;
   BlobMetadataCollection: ResolverTypeWrapper<BlobMetadataCollection>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
@@ -3125,6 +3137,7 @@ export type ResolversParentTypes = {
   AutomationRunStatusUpdateInput: AutomationRunStatusUpdateInput;
   AutomationsStatus: Omit<AutomationsStatus, 'automationRuns'> & { automationRuns: Array<ResolversParentTypes['AutomationRun']> };
   BigInt: Scalars['BigInt'];
+  BlobIds: BlobIds;
   BlobMetadata: BlobMetadata;
   BlobMetadataCollection: BlobMetadataCollection;
   Boolean: Scalars['Boolean'];
@@ -3427,6 +3440,11 @@ export interface BigIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTyp
   name: 'BigInt';
 }
 
+export type BlobIdsResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['BlobIds'] = ResolversParentTypes['BlobIds']> = {
+  id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type BlobMetadataResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['BlobMetadata'] = ResolversParentTypes['BlobMetadata']> = {
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   fileHash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -3624,6 +3642,7 @@ export type LimitedUserResolvers<ContextType = GraphQLContext, ParentType extend
 export type ModelResolvers<ContextType = GraphQLContext, ParentType extends ResolversParentTypes['Model'] = ResolversParentTypes['Model']> = {
   author?: Resolver<ResolversTypes['LimitedUser'], ParentType, ContextType>;
   automationStatus?: Resolver<Maybe<ResolversTypes['AutomationsStatus']>, ParentType, ContextType>;
+  blobIds?: Resolver<Array<ResolversTypes['BlobIds']>, ParentType, ContextType>;
   childrenTree?: Resolver<Array<ResolversTypes['ModelsTreeItem']>, ParentType, ContextType>;
   commentThreads?: Resolver<ResolversTypes['CommentCollection'], ParentType, ContextType, RequireFields<ModelCommentThreadsArgs, 'limit'>>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -4272,6 +4291,7 @@ export type Resolvers<ContextType = GraphQLContext> = {
   AutomationRun?: AutomationRunResolvers<ContextType>;
   AutomationsStatus?: AutomationsStatusResolvers<ContextType>;
   BigInt?: GraphQLScalarType;
+  BlobIds?: BlobIdsResolvers<ContextType>;
   BlobMetadata?: BlobMetadataResolvers<ContextType>;
   BlobMetadataCollection?: BlobMetadataCollectionResolvers<ContextType>;
   Branch?: BranchResolvers<ContextType>;

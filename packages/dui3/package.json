@@ -26,7 +26,7 @@
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.12",
     "@pinia/nuxt": "^0.4.11",
-    "@speckle/shared": "workspace:^",
+    "@speckle/shared": "^2.16.1-alpha.1",
     "@speckle/ui-components": "workspace:^",
     "@speckle/ui-components-nuxt": "workspace:^",
     "@vue/apollo-composable": "^4.0.0-beta.5",
